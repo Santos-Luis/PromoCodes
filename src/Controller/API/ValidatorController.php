@@ -14,8 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 class ValidatorController extends AbstractController
 {
     /**
-     * @Rest\Get("/validate", name="validate_promo_code_api")
+     * @Rest\Get("/validate/{promoCodeId}", name="validate_promo_code_api")
      *
+     * @param string              $promoCodeId
      * @param PromoCodeRepository $repository
      * @param Request             $request
      *
@@ -23,19 +24,17 @@ class ValidatorController extends AbstractController
      *
      * @throws Exception
      */
-    public function validatePromoCode(PromoCodeRepository $repository, Request $request): JsonResponse
-    {
-        $id = $request->get('promo-code-id');
-        if (null === $id) {
-            return new JsonResponse('Missing promo-code-id query parameter', 500);
-        }
-
+    public function validatePromoCode(
+        string $promoCodeId,
+        PromoCodeRepository $repository,
+        Request $request
+    ): JsonResponse {
         $userId = $request->get('user-id');
-        if (null === $userId) {
+        if (!$userId) {
             return new JsonResponse('Missing user-id query parameter', 500);
         }
 
-        $promoCode = $repository->getById($id);
+        $promoCode = $repository->getById($promoCodeId);
         if (!$promoCode instanceof PromoCode) {
             return new JsonResponse('Invalid promo code id', 500);
         }

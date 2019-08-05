@@ -38,7 +38,7 @@ class CreatorController extends AbstractController
         **/
 
         $owner = $request->get('owner');
-        if (null === $owner) {
+        if (!$owner) {
             return new JsonResponse('Missing owner query parameter', 500);
         }
 
@@ -47,7 +47,7 @@ class CreatorController extends AbstractController
         $createdBy = $request->get('created-by', 'uniplaces');
 
         $expirationDate = $request->get('expiration-date');
-        if (null === $expirationDate) {
+        if (!$expirationDate) {
             $now = new DateTime();
             $expirationDate = $now->add(new DateInterval(self::DEFAULT_EXPIRATION_DAYS));
         }

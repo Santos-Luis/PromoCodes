@@ -15,8 +15,9 @@ use Symfony\Component\HttpFoundation\Request;
 class EditorController extends AbstractController
 {
     /**
-     * @Rest\Patch("/edit", name="edit_promo_code_api")
+     * @Rest\Patch("/edit/{promoCodeId}", name="edit_promo_code_api")
      *
+     * @param string              $promoCodeId
      * @param PromoCodeRepository $repository
      * @param Request             $request
      *
@@ -24,8 +25,11 @@ class EditorController extends AbstractController
      *
      * @throws Exception
      */
-    public function editPromoCode(PromoCodeRepository $repository, Request $request): JsonResponse
-    {
+    public function editPromoCode(
+        string $promoCodeId,
+        PromoCodeRepository $repository,
+        Request $request
+    ): JsonResponse {
         /**
         $authToken = $request->get('token');
         if (null === $authToken) {
@@ -33,33 +37,28 @@ class EditorController extends AbstractController
         }
          **/
 
-        $id = $request->get('promo-code-id');
-        if (null === $id) {
-            return new JsonResponse('Missing promo-code-id query parameter', 500);
-        }
-
-        $promoCode = $repository->getById($id);
-        if (null === $promoCode) {
+        $promoCode = $repository->getById($promoCodeId);
+        if (!$promoCode) {
             return new JsonResponse('Invalid promo code', 500);
         }
 
         $newOwner = $request->get('owner');
-        if (null !== $newOwner) {
+        if ($newOwner) {
             $promoCode->setOwner($newOwner);
         }
 
         $newDiscountPercentage = $request->get('discount-percentage');
-        if (null !== $newDiscountPercentage) {
+        if ($newDiscountPercentage) {
             $promoCode->setDiscountPercentage($newDiscountPercentage);
         }
 
         $newExpirationDate = $request->get('expiration-date');
-        if (null !== $newExpirationDate) {
+        if ($newExpirationDate) {
             $promoCode->setExpirationDate($newExpirationDate);
         }
 
         $newCreatedBy = $request->get('created-by');
-        if (null !== $newCreatedBy) {
+        if ($newCreatedBy) {
             $promoCode->setCreatedBy($newCreatedBy);
         }
 
@@ -67,6 +66,6 @@ class EditorController extends AbstractController
 
         $repository->save($promoCode);
 
-        return new JsonResponse('Promo code ' . $id . ' successfully edited', 200);
+        return new JsonResponse('Promo code ' . $promoCodeId . ' successfully edited', 200);
     }
 }
