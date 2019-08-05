@@ -2,35 +2,34 @@
 
 namespace App\Repository;
 
-use App\Entity\PromoCode;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 
-class PromoCodeRepository extends ServiceEntityRepository
+class UserRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, PromoCode::class);
+        parent::__construct($registry, User::class);
     }
 
     /**
-     * @param PromoCode $promoCode
+     * @param User $user
      *
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function save(PromoCode $promoCode): void
+    public function save(User $user): void
     {
         $em = $this->getEntityManager();
-        $em->persist($promoCode);
+        $em->persist($user);
         $em->flush();
     }
 
-    public function getById(string $id): ?PromoCode
+    public function getById(string $username): ?User
     {
-        return $this->findOneBy(['id' => $id]);
+        return $this->findOneBy(['userName' => $username]);
     }
-
 }
