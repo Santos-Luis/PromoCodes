@@ -2,15 +2,14 @@
 
 namespace App\Controller\API;
 
-use App\Entity\PromoCode;
 use App\Repository\PromoCodeRepository;
 use DateTime;
 use DateTimeZone;
 use Exception;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class EditorController extends AbstractController
 {
@@ -21,7 +20,7 @@ class EditorController extends AbstractController
      * @param PromoCodeRepository $repository
      * @param Request             $request
      *
-     * @return JsonResponse
+     * @return Response
      *
      * @throws Exception
      */
@@ -29,7 +28,7 @@ class EditorController extends AbstractController
         string $promoCodeId,
         PromoCodeRepository $repository,
         Request $request
-    ): JsonResponse {
+    ): Response {
         /**
         $authToken = $request->get('token');
         if (null === $authToken) {
@@ -39,7 +38,7 @@ class EditorController extends AbstractController
 
         $promoCode = $repository->getById($promoCodeId);
         if (!$promoCode) {
-            return new JsonResponse('Invalid promo code', 500);
+            return new Response('Error: invalid promo code', 500);
         }
 
         $newOwner = $request->get('owner');
@@ -66,6 +65,6 @@ class EditorController extends AbstractController
 
         $repository->save($promoCode);
 
-        return new JsonResponse('Promo code ' . $promoCodeId . ' successfully edited', 200);
+        return new Response('Promo code ' . $promoCodeId . ' successfully edited', 200);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -16,7 +17,7 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=50)
      * @ORM\Id
      */
-    private $userName;
+    private $username;
 
     /**
      * @var string
@@ -32,16 +33,16 @@ class User implements UserInterface
      */
     private $roles;
 
-    public function __construct(string $userName, string $password, array $roles)
+    public function __construct(string $username, string $password, array $roles)
     {
-        $this->userName = $userName;
+        $this->username = $username;
         $this->password = $password;
         $this->roles = json_encode($roles);
     }
 
     public function getUsername(): string
     {
-        return $this->userName;
+        return $this->username;
     }
 
     public function getPassword(): string
@@ -56,7 +57,7 @@ class User implements UserInterface
 
     public function getSalt(): void
     {
-        return null;
+        // Do nothing
     }
 
     public function eraseCredentials(): void

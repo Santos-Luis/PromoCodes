@@ -39,7 +39,7 @@ class CreatorController extends AbstractController
 
         $owner = $request->get('owner');
         if (!$owner) {
-            return new JsonResponse('Missing owner query parameter', 500);
+            return new JsonResponse('Error: missing owner query parameter', 500);
         }
 
         $id = $this->generateUUID();
@@ -55,7 +55,7 @@ class CreatorController extends AbstractController
         $promoCode = new PromoCode($id, $owner, $discountPercentage, $expirationDate, $createdBy);
         $repository->save($promoCode);
 
-        return new JsonResponse($promoCode->getId(), 200);
+        return new JsonResponse(['promo_code_id' => $promoCode->getId()], 201);
     }
 
     private function generateUUID(): string
