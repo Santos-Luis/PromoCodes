@@ -55,19 +55,28 @@ class PromoCode
      */
     private $createdAt;
 
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(type="datetime")
+     */
+    private $editedAt;
+
     public function __construct(
         string $id,
         string $owner,
         int $discountPercentage,
         DateTime $expirationDate,
-        string $createdBy
+        string $createdBy,
+        DateTime $editedAt = null
     ) {
         $this->id = $id;
         $this->owner = $owner;
         $this->discountPercentage = $discountPercentage;
         $this->expirationDate = $expirationDate;
         $this->createdBy = $createdBy;
-        $this-> createdAt = new DateTime('now', new DateTimeZone('Europe/Lisbon'));
+        $this->createdAt = new DateTime('now', new DateTimeZone('Europe/Lisbon'));
+        $this->editedAt = $editedAt ?? $this->createdAt;
     }
 
     public function getId(): string
@@ -99,4 +108,36 @@ class PromoCode
     {
         return $this->createdAt;
     }
+
+    public function getEditedAt(): DateTime
+    {
+        return $this->editedAt;
+    }
+
+    public function setOwner(string $owner): void
+    {
+        $this->owner = $owner;
+    }
+
+    public function setDiscountPercentage(int $discountPercentage): void
+    {
+        $this->discountPercentage = $discountPercentage;
+    }
+
+    public function setExpirationDate(DateTime $expirationDate): void
+    {
+        $this->expirationDate = $expirationDate;
+    }
+
+    public function setCreatedBy(string $createdBy): void
+    {
+        $this->createdBy = $createdBy;
+    }
+
+    public function setEditedAt(DateTime $editedAt): void
+    {
+        $this->editedAt = $editedAt;
+    }
+
+
 }
