@@ -75,8 +75,8 @@ class PromoCode
         $this->discountPercentage = $discountPercentage;
         $this->expirationDate = $expirationDate;
         $this->createdBy = $createdBy;
+        $this->editedAt = $editedAt;
         $this->createdAt = new DateTime('now', new DateTimeZone('Europe/Lisbon'));
-        $this->editedAt = $editedAt ?? $this->createdAt;
     }
 
     public function getId(): string
