@@ -19,7 +19,7 @@ class CreatorController extends AbstractController
     private const UUID_LENGTH = 8;
 
     /**
-     * @Rest\Post("/new", name="new_promo_code_api")
+     * @Rest\Post("/create", name="create_promo_code_api")
      *
      * @param PromoCodeRepository $repository
      * @param Request             $request

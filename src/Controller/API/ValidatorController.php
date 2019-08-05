@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ValidatorController extends AbstractController
 {
     /**
-     * @Rest\Get("/get/id", name="get_by_id_api")
+     * @Rest\Get("/validate", name="validate_promo_code_api")
      *
      * @param PromoCodeRepository $repository
      * @param Request             $request
@@ -23,7 +23,7 @@ class ValidatorController extends AbstractController
      *
      * @throws Exception
      */
-    public function getById(PromoCodeRepository $repository, Request $request): JsonResponse
+    public function validatePromoCode(PromoCodeRepository $repository, Request $request): JsonResponse
     {
         $id = $request->get('promo-code-id');
         if (null === $id) {
