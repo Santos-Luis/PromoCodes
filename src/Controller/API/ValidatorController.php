@@ -8,8 +8,8 @@ use DateTime;
 use Exception;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ValidatorController extends AbstractController
 {
@@ -20,7 +20,7 @@ class ValidatorController extends AbstractController
      * @param PromoCodeRepository $repository
      * @param Request             $request
      *
-     * @return JsonResponse
+     * @return Response
      *
      * @throws Exception
      */
@@ -28,25 +28,25 @@ class ValidatorController extends AbstractController
         string $promoCodeId,
         PromoCodeRepository $repository,
         Request $request
-    ): JsonResponse {
+    ): Response {
         $userId = $request->get('user-id');
         if (!$userId) {
-            return new JsonResponse('Missing user-id query parameter', 500);
+            return new Response('Error: missing user-id query parameter', 500);
         }
 
         $promoCode = $repository->getById($promoCodeId);
         if (!$promoCode instanceof PromoCode) {
-            return new JsonResponse('Invalid promo code id', 500);
+            return new Response('Error: invalid promo code id', 500);
         }
 
         if ($promoCode->getOwner() === $userId) {
-            return new JsonResponse('User cannot user own promo code', 500);
+            return new Response('Error: user cannot user own promo code', 500);
         }
 
         if ($promoCode->getExpirationDate() < new DateTime()) {
-            return new JsonResponse('Promo code already expired', 500);
+            return new Response('Error: promo code already expired', 500);
         }
 
-        return new JsonResponse('Valid promo code', 200);
+        return new Response('Valid promo code', 200);
     }
 }

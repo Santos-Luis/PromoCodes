@@ -28,8 +28,8 @@ class UserRepository extends ServiceEntityRepository
         $em->flush();
     }
 
-    public function getById(string $username): ?User
+    public function getByUsername(string $username): ?User
     {
-        return $this->findOneBy(['userName' => $username]);
+        return $this->findOneBy(['username' => $username]);
     }
 }
