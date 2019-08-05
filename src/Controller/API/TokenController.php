@@ -34,12 +34,12 @@ class TokenController extends AbstractController
     ): JsonResponse {
         $username = $request->get('username');
         if (!$username) {
-            return new JsonResponse('Error: missing username query parameter');
+            return new JsonResponse('Error: missing username query parameter', 500);
         }
 
         $password = $request->get('password');
         if (!$password) {
-            return new JsonResponse('Error: missing password query parameter');
+            return new JsonResponse('Error: missing password query parameter', 500);
         }
 
         $user = $repository->getByUsername($username);
@@ -54,6 +54,6 @@ class TokenController extends AbstractController
 
         $token = $encoder->encode(['username' => $user->getUsername(), 'exp' => time() + 3600]);
 
-        return new JsonResponse(['token' => $token]);
+        return new JsonResponse(['token' => $token], 200);
     }
 }
