@@ -27,4 +27,9 @@ class PromoCodeRepository extends ServiceEntityRepository
         $em->flush();
     }
 
+    public function getById(string $id): ?PromoCode
+    {
+        return $this->findOneBy(['id' => $id]);
+    }
+
 }
