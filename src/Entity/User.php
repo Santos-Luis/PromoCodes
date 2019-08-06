@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -16,6 +17,7 @@ class User implements UserInterface
      *
      * @ORM\Id
      * @ORM\Column(type="string", length=50)
+     * @Serializer\Groups({"public"})
      */
     private $username;
 
@@ -30,10 +32,11 @@ class User implements UserInterface
      * @var array
      *
      * @ORM\Column(type="json")
+     * @Serializer\Groups({"public"})
      */
     private $roles;
 
-    public function __construct(string $username, string $password, array $roles)
+    public function __construct(string $username = null, string $password = null, array $roles = null)
     {
         $this->username = $username;
         $this->password = $password;
@@ -45,9 +48,23 @@ class User implements UserInterface
         return $this->username;
     }
 
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
     public function getPassword(): string
     {
         return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
     }
 
     public function getRoles(): array
@@ -57,6 +74,13 @@ class User implements UserInterface
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 
     public function getSalt(): void
