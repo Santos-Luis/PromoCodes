@@ -30,6 +30,7 @@ class CreatorController extends AbstractController
      */
     public function createPromoCode(PromoCodeRepository $repository, Request $request): JsonResponse
     {
+        echo 'user: ' . $this->getUser()->getUsername(); die;
         /**
         $authToken = $request->get('token');
         if (null === $authToken) {
