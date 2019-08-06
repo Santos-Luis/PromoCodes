@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Controller;
+
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+
+class HealthCheckController extends AbstractController
+{
+    /**
+     * @Route("/health/check", name="health_check")
+     */
+    public function health(): Response
+    {
+        return Response::create();
+    }
+}
