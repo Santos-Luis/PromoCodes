@@ -14,22 +14,22 @@ class User implements UserInterface
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=50)
      * @ORM\Id
+     * @ORM\Column(type="string", length=50)
      */
     private $username;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string")
      */
     private $password;
 
     /**
-     * @var string
+     * @var array
      *
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="json")
      */
     private $roles;
 
@@ -37,7 +37,7 @@ class User implements UserInterface
     {
         $this->username = $username;
         $this->password = $password;
-        $this->roles = json_encode($roles);
+        $this->roles = $roles;
     }
 
     public function getUsername(): string
@@ -52,12 +52,16 @@ class User implements UserInterface
 
     public function getRoles(): array
     {
-        return json_decode($this->roles, true);
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
     public function getSalt(): void
     {
-        // Do nothing
+        // Not needed when using the bcrypt algorithm
     }
 
     public function eraseCredentials(): void

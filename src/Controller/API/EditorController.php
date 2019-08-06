@@ -29,13 +29,6 @@ class EditorController extends AbstractController
         PromoCodeRepository $repository,
         Request $request
     ): Response {
-        /**
-        $authToken = $request->get('token');
-        if (null === $authToken) {
-            return new JsonResponse('Authentication error', 500);
-        }
-         **/
-
         $promoCode = $repository->getById($promoCodeId);
         if (!$promoCode) {
             return new Response('Error: invalid promo code', 500);
