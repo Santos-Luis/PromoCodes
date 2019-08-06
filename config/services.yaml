@@ -25,7 +25,3 @@ services:
 
     sensio_framework_extra.view.listener:
         alias: Sensio\Bundle\FrameworkExtraBundle\EventListener\TemplateListener
-
-    jwt_token_authenticator:
-        class: App\Security\JwtTokenAuthenticator
-        autowire: true

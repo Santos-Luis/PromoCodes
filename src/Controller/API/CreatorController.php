@@ -30,14 +30,6 @@ class CreatorController extends AbstractController
      */
     public function createPromoCode(PromoCodeRepository $repository, Request $request): JsonResponse
     {
-        echo 'user: ' . $this->getUser()->getUsername(); die;
-        /**
-        $authToken = $request->get('token');
-        if (null === $authToken) {
-            return new JsonResponse('Authentication error', 500);
-        }
-        **/
-
         $owner = $request->get('owner');
         if (!$owner) {
             return new JsonResponse('Error: missing owner query parameter', 500);
