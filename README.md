@@ -3,17 +3,21 @@ Promo codes REST API made with Symfony
 
 ----
 
-##### Stack
+### Stack
 * [Symfony framework](https://symfony.com/doc/current/setup.html)
 * [Serverless](https://serverless.com/framework/docs/providers/aws/guide/installation/) (for deploying)
 * [Docker](https://docs.docker.com/install/) (for database local testing)
 
-##### Description
+### Description
 * This is a REST API made to be used as a backend for a promo codes system.
 * Currently, the API allow you create, edit, and validate promo codes. You can also register new users.
 * The all API is authenticated using JWT token, being only the registered users being allowed to use it.
 
-##### Routes description
+### Routes description
+```diff
++ /api/create/{owner}
+```
+
 | Route                                | HTTP Method | Query parameters                                                                                          | Description                                                                                                                                                                  | Return values                                                                                             |
 | :----------------------------------: |------------ | --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
 | /api/create/{owner}                  | POST        | discount-percentage (optional: default is 10)<br>expiration-date (optional: default is today + 15 days)   | Creates a new promo code for the "owner". The "createdBy" is extracted from the authentication token.                                                                        | Promo code id                                                                                             |
