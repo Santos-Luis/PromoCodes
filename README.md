@@ -5,7 +5,7 @@ Promo codes REST API made with Symfony
 
 ## Stack
 * [Symfony framework](https://symfony.com/doc/current/setup.html)
-* [Serverless](https://serverless.com/framework/docs/providers/aws/guide/installation/) (for deploying)
+* [Elastic Beanstalk cli](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install.html) (you can use brew, but it's not recommended)
 * [Docker](https://docs.docker.com/install/) (for database local testing)
 
 ## Description
@@ -91,9 +91,28 @@ Promo codes REST API made with Symfony
     * **Return Values:**
         * The new JWT token and the same refresh token as before                                                   |
 
+## Run locally:
+```bash
+php bin/console server:start
+
+docker-compose up -d
+```
+* User curl/postman to make requests (do not forget about the correct HTTP Method and the authentication on header)
+
+## Deploy:
+* The first time: 
+```bash
+eb init [application-name]
+eb create [environment-name]
+eb deploy [environment-name]
+```
+* After the first time:
+```bash
+eb deploy
+```
+
 ## TODO (promo code attributes):
 * Edited by
 * Last used at
 * Number of uses
 * Active (acts like a cache for the validation action)
-
