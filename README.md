@@ -3,22 +3,116 @@ Promo codes REST API made with Symfony
 
 ----
 
-##### Stack
+## Stack
 * [Symfony framework](https://symfony.com/doc/current/setup.html)
-* [Serverless](https://serverless.com/framework/docs/providers/aws/guide/installation/) (for deploying)
+* [Elastic Beanstalk cli](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install.html) (you can use brew, but it's not recommended)
 * [Docker](https://docs.docker.com/install/) (for database local testing)
 
-##### Description
+## Description
 * This is a REST API made to be used as a backend for a promo codes system.
 * Currently, the API allow you create, edit, and validate promo codes. You can also register new users.
 * The all API is authenticated using JWT token, being only the registered users being allowed to use it.
 
-##### Routes description
-| Route                                | HTTP Method | Query parameters                                                                                          | Description                                                                                                                                                                  | Return values                                                                                             |
-| :----------------------------------: |------------ | --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| /api/create/{owner}                  | POST        | discount-percentage (optional: default is 10)<br>expiration-date (optional: default is today + 15 days)   | Creates a new promo code for the "owner". The "createdBy" is extracted from the authentication token.                                                                        | Promo code id                                                                                             |
-| /api/edit/{promoCodeId}              | PATCH       | created-by (optional)<br>discount-percentage (optional)<br>expiration-date (optional)<br>owner (optional) | Edit an existent promo code attributes.                                                                                                                                      | Invalid promo code<br>Success message                                                                     |
-| /api/register/user                   | POST        | username (required)<br>password (required)                                                                | Creates a new user with the role "USER". The user you are currently using must have "ADMIN" privileges.                                                                      | Missing parameters<br>User already exists<br>The new user username and roles                              |
-| /api/validate/{promoCodeId}/{userId} | GET         |                                                                                                           | Validate if a promo code is valid. The "userId" is the user that is trying to use this promo code (if any), this way we assure that the owner cannot use the own promo code. | Invalid promo code id<br>User cannot use own promo code<br>Promo code already expired<br>Valid promo code |
-| /api/login_check                     | POST        | username (required)<br>password (required)                                                                | Creates a new JWT token. This token has a duration of 1 hour.                                                                                                                | Authentication error<br>The new JWT token and a refresh token (1 month duration)                          |
-| /api/token/refresh                   | POST        | refresh_token (required)                                                                                  | Returns a fresh JWT token for the same user that was associated to the previous one.                                                                                         | The new JWT token and the same refresh token as before                                                    |
+## Routes details
+* **/api/create/{owner}**:
+    * **HTTP Method:** 
+        * POST
+    * **Query Parameters:** 
+        * discount-percentage (optional: default is 10)
+        * expiration-date (optional: default is today + 15 days) 
+    * **Description:** 
+        * Creates a new promo code for the "owner". The "createdBy" is extracted from the authentication token.
+    * **Return Values:**
+        * Promo code id
+    
+       
+* **/api/edit/{promoCodeId}**:
+    * **HTTP Method:** 
+        * PATCH
+    * **Query Parameters:** 
+        * created-by (optional)
+        * discount-percentage (optional)
+        * expiration-date (optional)
+        * owner (optional)
+    * **Description:** 
+        * Edit an existent promo code attributes.
+    * **Return Values:**
+        * Invalid promo code<br>Success message
+       
+        
+* **/api/register/user**:
+    * **HTTP Method:** 
+        * POST
+    * **Query Parameters:** 
+        * username (required)
+        * password (required)
+    * **Description:** 
+        * Creates a new user with the role "USER". The user you are currently using must have "ADMIN" privileges.
+    * **Return Values:**
+        * Missing parameters
+        * User already exists
+        * The new user username and roles
+        
+      
+        
+* **/api/validate/{promoCodeId}/{userId}**:
+    * **HTTP Method:** 
+        * GET
+    * **Query Parameters:** 
+    * **Description:** 
+        * Validate if a promo code is valid. The "userId" is the user that is trying to use this promo code (if any), this way we assure that the owner cannot use the own promo code.
+    * **Return Values:**
+        * Invalid promo code id
+        * User cannot use own promo code
+        * Promo code already expired
+        * Valid promo code
+
+        
+* **/api/login_check**:
+    * **HTTP Method:** 
+        * POST
+    * **Query Parameters:** 
+        * username (required)
+        * password (required)
+    * **Description:** 
+        * Validate if a promo code is valid. The "userId" is the user that is trying to use this promo code (if any), this way we assure that the owner cannot use the own promo code.
+    * **Return Values:**
+        * Authentication error
+        * The new JWT token and a refresh token (1 month duration)
+        
+
+* **/api/token/refresh**:
+    * **HTTP Method:** 
+        * POST
+    * **Query Parameters:** 
+        * refresh_token (required)
+    * **Description:** 
+        * Returns a fresh JWT token for the same user that was associated to the previous one.
+    * **Return Values:**
+        * The new JWT token and the same refresh token as before                                                   |
+
+## Run locally:
+```bash
+php bin/console server:start
+
+docker-compose up -d
+```
+* User curl/postman to make requests (do not forget about the correct HTTP Method and the authentication on header)
+
+## Deploy:
+* The first time: 
+```bash
+eb init [application-name]
+eb create [environment-name]
+eb deploy [environment-name]
+```
+* After the first time:
+```bash
+eb deploy
+```
+
+## TODO (promo code attributes):
+* Edited by
+* Last used at
+* Number of uses
+* Active (acts like a cache for the validation action)
