@@ -46,7 +46,7 @@ class EditorController extends AbstractController
 
         $newExpirationDate = $request->get('expiration-date');
         if ($newExpirationDate) {
-            $promoCode->setExpirationDate($newExpirationDate);
+            $promoCode->setExpirationDate(new DateTime($newExpirationDate));
         }
 
         $newCreatedBy = $request->get('created-by');

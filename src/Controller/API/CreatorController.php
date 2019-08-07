@@ -6,7 +6,8 @@ use App\Entity\PromoCode;
 use App\Repository\PromoCodeRepository;
 use DateInterval;
 use DateTime;
-use Exception;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,31 +20,27 @@ class CreatorController extends AbstractController
     private const UUID_LENGTH = 8;
 
     /**
-     * @Rest\Post("/create", name="create_promo_code_api")
+     * @Rest\Post("/create/{owner}", name="create_promo_code_api")
      *
      * @param PromoCodeRepository $repository
      * @param Request             $request
      *
+     * @param string              $owner
      * @return JsonResponse
      *
-     * @throws Exception
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function createPromoCode(PromoCodeRepository $repository, Request $request): JsonResponse
+    public function createPromoCode(PromoCodeRepository $repository, Request $request, string $owner): JsonResponse
     {
-        $owner = $request->get('owner');
-        if (!$owner) {
-            return new JsonResponse('Error: missing owner query parameter', 500);
-        }
-
         $id = $this->generateUUID();
         $discountPercentage = $request->get('discount-percentage', self::DEFAULT_DISCOUNT_PERCENTAGE);
-        $createdBy = $request->get('created-by', 'uniplaces');
+        $createdBy = $this->getUser()->getUsername();
 
         $expirationDate = $request->get('expiration-date');
-        if (!$expirationDate) {
-            $now = new DateTime();
-            $expirationDate = $now->add(new DateInterval(self::DEFAULT_EXPIRATION_DAYS));
-        }
+        $expirationDate = $expirationDate
+            ? new DateTime($expirationDate)
+            : (new DateTime())->add(new DateInterval(self::DEFAULT_EXPIRATION_DAYS));
 
         $promoCode = new PromoCode($id, $owner, $discountPercentage, $expirationDate, $createdBy);
         $repository->save($promoCode);

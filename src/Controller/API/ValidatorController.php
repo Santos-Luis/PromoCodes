@@ -8,17 +8,16 @@ use DateTime;
 use Exception;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ValidatorController extends AbstractController
 {
     /**
-     * @Rest\Get("/validate/{promoCodeId}", name="validate_promo_code_api")
+     * @Rest\Get("/validate/{promoCodeId}/{userId}", name="validate_promo_code_api")
      *
      * @param string              $promoCodeId
+     * @param string              $userId
      * @param PromoCodeRepository $repository
-     * @param Request             $request
      *
      * @return Response
      *
@@ -26,14 +25,9 @@ class ValidatorController extends AbstractController
      */
     public function validatePromoCode(
         string $promoCodeId,
-        PromoCodeRepository $repository,
-        Request $request
+        string $userId,
+        PromoCodeRepository $repository
     ): Response {
-        $userId = $request->get('user-id');
-        if (!$userId) {
-            return new Response('Error: missing user-id query parameter', 500);
-        }
-
         $promoCode = $repository->getById($promoCodeId);
         if (!$promoCode instanceof PromoCode) {
             return new Response('Error: invalid promo code id', 500);
