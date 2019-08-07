@@ -3,17 +3,17 @@ Promo codes REST API made with Symfony
 
 ----
 
-### Stack
+## Stack
 * [Symfony framework](https://symfony.com/doc/current/setup.html)
 * [Serverless](https://serverless.com/framework/docs/providers/aws/guide/installation/) (for deploying)
 * [Docker](https://docs.docker.com/install/) (for database local testing)
 
-### Description
+## Description
 * This is a REST API made to be used as a backend for a promo codes system.
 * Currently, the API allow you create, edit, and validate promo codes. You can also register new users.
 * The all API is authenticated using JWT token, being only the registered users being allowed to use it.
 
-### Routes description
+## Routes details
 * **/api/create/{owner}**:
     * **HTTP Method:** 
         * POST
@@ -90,3 +90,10 @@ Promo codes REST API made with Symfony
         * Returns a fresh JWT token for the same user that was associated to the previous one.
     * **Return Values:**
         * The new JWT token and the same refresh token as before                                                   |
+
+## TODO (promo code attributes):
+* Edited by
+* Last used at
+* Number of uses
+* Active (acts like a cache for the validation action)
+
