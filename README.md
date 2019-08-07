@@ -14,9 +14,34 @@ Promo codes REST API made with Symfony
 * The all API is authenticated using JWT token, being only the registered users being allowed to use it.
 
 ### Routes description
-```diff
-+ /api/create/{owner}
-```
+* **/api/create/{owner}**:
+    * **HTTP Method:** POST
+    * **Query Parameters:** 
+        * discount-percentage (optional: default is 10)
+        * expiration-date (optional: default is today + 15 days) 
+    * **Description:** Creates a new promo code for the "owner". The "createdBy" is extracted from the authentication token.
+    * **Return Values:**
+        *  Promo code id
+    
+       
+* **/api/create/{owner}**:
+    * **HTTP Method:** POST
+    * **Query Parameters:** 
+        * discount-percentage (optional: default is 10)
+        * expiration-date (optional: default is today + 15 days) 
+    * **Description:**
+    * **Return Values:**
+        * 
+        
+* **/api/create/{owner}**:
+    * **HTTP Method:** POST
+    * **Query Parameters:** 
+        * discount-percentage (optional: default is 10)
+        * expiration-date (optional: default is today + 15 days) 
+    * **Description:**
+    * **Return Values:**
+        *  
+
 
 | Route                                | HTTP Method | Query parameters                                                                                          | Description                                                                                                                                                                  | Return values                                                                                             |
 | :----------------------------------: |------------ | --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
